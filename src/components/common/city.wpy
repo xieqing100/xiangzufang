@@ -1,0 +1,258 @@
+<template>
+  <view class="detail">
+    <view class="content">
+      <view class="menu-container">
+        <scroll-view scroll-y="true" class="scroll-view" scroll-into-view="head-{{indexSize}}">
+          <view class="scroll-view-ul">   
+
+          <block wx:for="{{detail}}" wx:for-item="item" wx:key="index" id="head-{{index}}">
+              <view class="scroll-view-item {{indexSize === index?'active':''}}"   bindtap="scrollTo" data-index="{{index}}">{{item.title}}
+              </view>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+
+      <swiper indicator-dots='true' class="detail-container" bindchange="change" data-index="{{index}}" current="{{indexSize}}"
+        indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" duration="{{duration}}">
+        <swiper-item wx:for="{{detail}}" wx:for-item="item" wx:key="index">
+          <scroll-view scroll-y="true" class=" market-scroll-list">
+            <view class="title">{{detail[indexSize].title}} </view>
+            <a wx:for="{{detail[indexSize].list}}" wx:key="index" wx:key="index" item="item"
+              key="key"> 
+              <view class="inner" bindtap="listTo" current="{{indexSize}}">
+                <view class="info overflow">
+                  <view class="info-title overflow">{{item.title}}</view>
+                </view>
+              </view>
+            </a>
+
+          </scroll-view>
+        </swiper-item>
+
+      </swiper>
+
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+export default class city extends wepy.component {
+  data = {
+    indexSize: 0,
+    indicatorDots: false,
+    autoplay: false,
+    duration: 0, // 可以控制动画
+    list: '',
+    detail: [
+      {
+        id: 1,
+        title: '区域',
+        list: [{
+          title: '海上世界'
+        },
+        {
+          title: '海上世界'
+        },
+        {
+          title: '海上世界'
+        },
+        {
+          title: '海上世界'
+        },
+        {
+          title: '海上世界'
+        },
+        {
+          title: '海上世界'
+        },
+        {
+          title: '海上世界'
+        },
+        {
+          title: '海上世界'
+        },
+        {
+          title: '海上世界'
+        },
+        {
+          title: '海上世界'
+        },
+        {
+          title: '海上世界'
+        }
+        ]
+      },
+      {
+        id: 2,
+        title: '地铁',
+        list: [
+          {
+            title: '蛇口'
+          },
+          {
+            title: '蛇口'
+          },
+          {
+            title: '蛇口'
+          },
+          {
+            title: '蛇口'
+          },
+          {
+            title: '蛇口'
+          },
+          {
+            title: '蛇口'
+          }
+        ]
+      }
+    ]
+  }
+  methods = {
+    change(e) {
+      this.indexSize = e.detail.current
+    },
+    scrollTo(e) {
+      this.indexSize = e.target.dataset.index
+    },
+    listTo(index) {
+      console.log(index)
+    }
+  }
+}
+</script>
+
+<style lang="less">
+.overflow {
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+width: 100%;
+}
+
+.content {
+display: flex;
+width: 100%;
+position: absolute;
+bottom: 0rpx;
+left: 0;
+top: 0;
+overflow: hidden;
+}
+.menu-container {
+width: 160rpx;
+flex: 0 0 160rpx;
+background: #f6f6f6;
+}
+.detail-container {
+flex: 1;
+height: 100%;
+}
+
+.scroll-view {
+width: 100%;
+height: 100%;
+}
+.scroll-view-ul {
+width: 100%;
+height: 100%;
+}
+.scroll-view-item {
+height: 110rpx;
+width: 100%;
+font-size: 24rpx;
+color: #666;
+border-left: 8rpx solid transparent;
+display: flex;
+align-items: center;
+justify-content: center;
+position: relative;
+}
+.scroll-view-item:after {
+content: '';
+left: 0;
+right: 0;
+bottom: 0;
+height: 1px;
+background-color: #dfdfdf;
+transform: scaleY(0.5);
+position: absolute;
+}
+.active {
+background: #ffffff;
+color: #fe3e62;
+border-left: 8rpx solid #fe3e62;
+}
+
+
+
+.market-scroll-list {
+height: 100%;
+}
+.title {
+height: 55rpx;
+background-color: #f6f6f6;
+border-left: 6rpx solid #dfdfdf;
+padding-left: 25rpx;
+line-height: 55rpx;
+}
+.inner {
+display: flex;
+padding: 30rpx;
+position: relative;
+}
+.inner:after {
+  content: '';
+  left: 30rpx;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: #dfdfdf;
+  transform: scaleY(0.5);
+  position: absolute;
+}
+.cover {
+  width: 100rpx;
+  height: 100rpx;
+  border: 1px solid #dfdfdf;
+  background: #f6f6f6;
+  padding: 20rpx;
+
+}
+  .cover-img {
+    width: 100%;
+    height: 100%;
+    background-color: red;
+  }
+.info {
+  flex: 1;
+  padding: 0 30rpx;
+  font-size: 0;
+}
+  .info-title {
+    color: #333;
+    font-size: 26rpx;
+  }
+  .info-subtitle {
+    color: #999999;
+    font-size: 20rpx;
+    margin-top: -3rpx;
+  }
+  .info-desc {
+    color: #666666;
+    font-size: 22rpx;
+    margin-top: 5rpx;
+  }
+.num {
+  width: 120rpx;
+  position: relative;
+}
+    .text {
+    position: absolute;
+    bottom: 0;
+    font-size: 22rpx;
+    color: #666;
+  }
+</style>

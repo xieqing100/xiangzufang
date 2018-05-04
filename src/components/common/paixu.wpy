@@ -1,0 +1,104 @@
+<template>
+    <view class="paixu">
+      <view class="pricelist">
+        <view class="pritop" bindtap="paixu">价格从低到高</view>
+        <view class="pributtom" bindtap="high">价格从高到低</view>
+      </view>
+      <view class="but">
+        <button  bindtap="#" class="reset" hover-class="other-button-hover">重置</button>
+        <button  bindtap="confirm" class="deter" hover-class="other-button-hover">确定</button>
+      </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+export default class paixu extends wepy.component {
+  components = {}
+  data = {
+    list: [1, 3, 2, 5, 4]
+  }
+  onLoad () {}
+  methods = {
+    confirm () {
+
+    },
+    paixu () {
+      var list1 = this.list
+      for (var i = 0; i < list1.length; i++) {
+        for (var j = i + 1; j < list1.length; j++) {
+          if (list1[j] < list1[i]) {
+            var oli = list1[j]
+            list1[j] = list1[i]
+            list1[i] = oli
+          }
+        }
+      }
+      console.log(list1)
+    },
+    high () {
+      var list2 = this.list
+      for (var i = 0; i < list2.length; i++) {
+        for (var j = i + 1; j < list2.length; j++) {
+          if (list2[i] < list2[j]) {
+            var oli1 = list2[i]
+            list2[i] = list2[j]
+            list2[j] = oli1
+          }
+        }
+      }
+      console.log(list2)
+    }
+  }
+}
+</script>
+
+<style lang="less">
+  .paixu{
+    background:#fff;
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:400rpx;
+    .pricelist{
+      height:200rpx;
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      .pritop{
+        border:2rpx solid #000;
+        border-radius:4rpx;
+        height:70rpx;
+        width:75%;
+        margin-bottom:20rpx;
+        text-align: center;
+        line-height:70rpx;
+        tetx-size:20rpx;
+      }
+      .pributtom{
+        border:2rpx solid #000;
+        border-radius:4rpx;
+        height:70rpx;
+        width:75%;
+        text-align: center;
+        line-height:70rpx;
+        tetx-size:20rpx;
+      }
+    }
+  }
+
+  .but{
+    width:100%;
+    display:flex;
+    justify-content: space-between;
+    button{
+      width:50%;
+    }
+  }
+  .other-button-hover {
+  background-color: blue;
+}
+</style>

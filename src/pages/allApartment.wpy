@@ -1,0 +1,219 @@
+<template>
+  <view class="container">
+    <view class="section_two">
+      <view class="scroll_house">
+        <view class="item_list" wx:for="{{nearbyApart}}" wx:key="{{index}}">
+          <navigator open-type="navigate" url="/pages/detailApartroom" style="width:702rpx;height:600rpx;" hover-class="none">
+            <view class="house_img">
+              <image src="{{item.houseImg}}" class="nav_icon"></image>
+              <view class="apart_case">
+                <view class="apart_logo">
+                   <image src="../images/slogan_icon2.png" class="nav_icon"></image>
+                   <text></text>
+                </view>
+              </view>
+            </view>
+            <view class="aprt_name">
+              <view class="apart_slogan">
+                <text class="apart">{{item.apart}}</text>
+                <text class="room">{{item.room}}</text>
+              </view>
+              <view class="apart_address">
+                <image src="../images/location.png" class="location"></image>
+                <view class="address_details over">{{item.addresDetails}}</view>
+              </view>
+              <view class="apart_details">
+                <text class="price_num">￥{{item.priceNum}}/月起</text>
+                <text class="room_details">{{item.room_num}}个房型 | {{item.renting_room}}套在租</text>
+              </view>
+               <view class="apart_service">
+                <view class="service" wx:for="{{item.services}}"  wx:key="{{index}}">
+                  <view>{{item}}</view>
+                </view>
+              </view>
+            </view>
+          </navigator>
+        </view>
+       </view>
+    </view>
+    <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
+    <!--暂无数据显示-->
+    <placeholder :show.sync="is_empty" message="暂时没有数据哦"></placeholder>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+// import tip from '../utils/tip'
+import BottomLoadMore from '../components/common/bottomLoadMore'
+import Placeholder from '../components/common/placeholder'
+export default class allApartment extends wepy.page {
+  config = {
+    navigationBarTitleText: '附近公寓'
+  }
+  components = {
+    bottomLoadMore: BottomLoadMore,
+    placeholder: Placeholder
+  }
+  data = {
+    nearbyApart: [],
+    services: [],
+    // 是否显示 底部loading
+    showLoading: false,
+    is_empty: false
+  }
+  onLoad() {
+    this.nearbyApart = [{
+      houseImg: '../images/homeList_bg.png',
+      priceNum: '2209',
+      room_num: '3',
+      renting_room: '214',
+      apart: '魔方公寓',
+      locationLogo: '../images/location.png',
+      addresDetails: '南山区前海花园局里1号线大新228米sssssssssssssssssssssssssssssssss',
+      services: ['ATM', '代收快递', '专属客服', '房间清洁', '代收快递']
+    }, {
+      houseImg: '../images/homeList_bg.png',
+      priceNum: '3209',
+      room_num: '4',
+      renting_room: '215',
+      apart: '雅乐公寓',
+      locationLogo: '../images/location.png',
+      addresDetails: '南山区前海花园局里1号线大新328米爱迪达大多',
+      services: ['ATM', '代收快递', '专属客服', '房间清洁']
+    }, {
+      houseImg: '../images/homeList_bg.png',
+      priceNum: '4209',
+      room_num: '5',
+      renting_room: '215',
+      apart: '泊寓公寓',
+      locationLogo: '../images/location.png',
+      addresDetails: '南山区前海花园局里1号线大新428米',
+      services: ['ATM', '代收快递', '专属客服', '房间清洁']
+    }]
+  }
+  computed = {}
+  methods = {}
+  events = {}
+}
+
+</script>
+<style lang="less">
+.section_two{
+    width:702rpx;
+    height:auto;
+    font-family:'MicrosoftYaHei';
+    .scroll_house{
+    height:auto;
+    overflow: hidden;
+    background: #fff;
+    white-space: nowrap;
+    .item_list{
+      width:702rpx;
+      height:600rpx;
+      border-radius: 100rpx;
+      margin-bottom: 10rpx;
+      .house_img{
+        position: relative;
+        width:702rpx;
+        height:350rpx;
+        border-radius: 10rpx;
+        .nav_icon{
+          width:702rpx;
+          height:350rpx;
+          border-radius: 10rpx;
+        }
+        .apart_case{
+          position: absolute;
+          bottom:-60rpx;
+          right:30rpx;;
+          width:120rpx;
+          height:120rpx;
+          background: #ffffff;
+          border-radius: 50%;
+          box-shadow: 0px 0px 8px 3px rgba(0, 0, 0, 0.3);
+          .apart_logo{
+            width:100rpx;
+            height:100rpx;
+            padding-left:10rpx;
+            image{
+              position: absolute;
+              bottom:10rpx;
+              width:100rpx;
+              height:100rpx;
+            }
+          }
+        }
+      }
+      .aprt_name{
+        width:702rpx;
+        height:150rpx;
+        padding-top:20rpx;
+        .apart_slogan{
+          .apart{
+            font-size:32rpx;
+           color:#000000;
+          }
+          .room{
+            color:#999999;
+            font-size:28rpx;
+          } 
+        }
+        .apart_address{
+          margin-top:10rpx;
+          position: relative;
+          .location{
+            width:24rpx;
+            height:32rpx;
+            position: absolute;
+          }
+          .address_details{
+            display:inline-block;
+            width:70%;
+            font-size:26rpx;
+            color:#8b8b8b;
+            padding-left:30rpx;
+          }
+        }
+        .apart_details{
+          display:flex;
+          justify-content: space-between;
+          box-sizing: border-box;
+          .price_num{
+            font-size:30rpx;
+            color: #ff4545;
+          }
+          .room_details{
+            color:#999999;
+            font-size:22rpx;
+          }
+        }
+        .apart_service{
+          width:100%;
+          .service{
+          display:inline-block;
+          width:130rpx;
+          padding:0 15rpx 0 15rpx;
+          margin-right:10rpx;
+          margin-top:10rpx;
+          text-align: center;
+          border-radius: 4rpx;
+          border: 1px solid #0069ff;
+          color: #0069ff;
+          view{
+            color: #0069ff;
+            font-size:24rpx;
+          }
+          }
+        }
+      }
+    }
+    }
+  }
+  .over {
+  font-size: 26rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 70%;
+}
+</style>

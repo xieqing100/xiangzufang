@@ -1,0 +1,81 @@
+<template>
+
+  <view class="user">
+    <scroll-view scroll-y="true" style="height: 160rpx; margin-bottom:30rpx margin-top:20rpx">
+        <view style="color: blue; width: 400px; height: 20px; display: inline-block" >不限</view>
+        <view  style=" width: 400px; height: 20px; display: inline-block">《1500</view>
+        <view  style="width: 400px; height: 20px; display: inline-block">1500 - 3000</view>
+        <view  style="width: 400px; height: 20px; display: inline-block">3000 - 3500</view>
+        <view  style="width: 400px; height: 20px; display: inline-block">4000 - 4500</view>
+        <view  style="width: 400px; height: 20px; display: inline-block">5000 - 5500</view>
+        <view style="width: 400px; height: 20px; display: inline-block">6000 - 6500</view>
+    </scroll-view>
+
+    <view>0元 - {{slider}} </view>
+
+    <slider 
+    max="100"
+    step="1"
+    value="{{slider}}"
+    show-value="true"
+    bindchange="listenerSlider"
+/>
+    <view class="but">
+      <button  bindtap="" class="reset" hover-class="other-button-hover">重置</button>
+      <button  bindtap="#" class="deter" hover-class="other-button-hover">确定</button>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+
+export default class Price extends wepy.component {
+  components = {}
+  data = {
+    slider: '100'
+  }
+  onLoad () {
+
+  }
+  computed = {}
+  methods = {
+    listenerSlider (e) {
+      this.slider = e.detail.value
+    }
+  }
+  events = {}
+}
+
+</script>
+
+<style lang="less">
+  .user{
+    background:#fff;
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:450rpx;
+    text-align: center;
+    padding-top:20rpx;
+  }
+
+  ::-webkit-scrollbar{
+    width:0;
+    height:0;
+    color:transparent;
+  }
+
+  .but{
+    width:100%;
+    display:flex;
+    justify-content: space-between;
+    button{
+      width:50%;
+    }
+  }
+  .other-button-hover {
+  background-color: blue;
+}
+</style>

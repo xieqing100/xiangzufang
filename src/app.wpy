@@ -1,0 +1,99 @@
+<style lang="less" src="styles/base.less"></style>
+<style lang="less" src="styles/icon.less"></style>
+<style lang="less">
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+</style>
+
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+import api from '@/api'
+import { setStore } from 'wepy-redux'
+import configStore from './store'
+
+const store = configStore()
+setStore(store)
+
+export default class extends wepy.app {
+  config = {
+    pages: [
+      'pages/index',
+      'pages/bookTravel',
+      'pages/user',
+      'pages/login',
+      'pages/search',
+      'pages/entireApartment',
+      'pages/allApartment',
+      'pages/eachApartment',
+      'pages/detailApartroom'
+    ],
+    window: {
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTitleText: 'WeChat',
+      navigationBarTextStyle: 'black'
+    },
+    tabBar: {
+      color: '#999999',
+      selectedColor: '#333',
+      backgroundColor: '#f5f5f5',
+      borderStyle: 'white',
+      list: [
+        {
+          pagePath: 'pages/index',
+          text: '首页',
+          iconPath: './images/icon_index.png',
+          selectedIconPath: './images/icon_index_active.png'
+        },
+        {
+          pagePath: 'pages/bookTravel',
+          text: '预约行程',
+          iconPath: './images/icon_bookTravel.png',
+          selectedIconPath: './images/icon_bookTravel_active.png'
+        },
+        {
+          pagePath: 'pages/user',
+          text: '我的',
+          iconPath: './images/icon_user.png',
+          selectedIconPath: './images/icon_user_active.png'
+        }
+      ]
+    }
+  }
+  globalData = {
+    userInfo: null,
+    api
+  }
+  constructor () {
+    super()
+    this.use('requestfix')
+    this.use('promisify')
+  }
+  async onLaunch() {
+    // 校验登录状态
+    await wepy.checkSession().catch((e) => {
+      this.wxLogin()
+    })
+  }
+  async wxLogin() {
+    let res = await wepy.login().catch((e) => { console.log(e) })
+    if (res.code) {
+      console.log('wxLoginCode:', res.code)
+      // 存储登录code到本地
+      wepy.setStorage({
+        key: 'code',
+        data: res.code || ''
+      })
+      // 发送服务端获取openId和sessionKey
+      // let json = await wxRequest({code: res.code}, api.getOpenIdAndSessionKey)
+    }
+  }
+}
+</script>

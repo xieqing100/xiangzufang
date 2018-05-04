@@ -1,0 +1,167 @@
+<template>
+    <view class="more">
+        <view class="house">
+            <view class="house_header">户型</view>
+            <view class="house_list">
+                <view class="houtext">不限</view>
+                <view class="houtext">一室</view>
+                <view class="houtext">二室</view>
+                <view class="houtext">三室</view>
+                <view class="houtext">四室及以上</view>
+                <view class="hou"></view>
+            </view>
+        </view>
+        <view class="payment">
+            <view class="payment_header">付款方式</view>
+            <view class="payment_list">
+                <view class="paytext">不限</view>
+                <view class="paytext">押一</view>
+                <view class="paytext">押二</view>
+                <view class="paytext">押三</view>
+                <view class="paytext">押四</view>
+                <view class="paytext">自定义</view>
+            </view>
+        </view>
+        <view class="area">
+            <view class="area_header">面积</view>
+            <view class="area_list">
+                <view class="arertext">不限</view>
+                <view class="arertext">20m以下</view>
+                <view class="arertext">20m-40m</view>
+                <view class="arertext">40m-60m</view>
+                <view class="arertext">60m-80m</view>
+                <view class="arertext">80m-100m</view>
+                <view class="arertext">100m以上</view>
+            </view>
+        </view>
+        <view class="but">
+            <button  bindtap="#" class="reset" hover-class="other-button-hover">重置</button>
+            <button  bindtap="confirm" class="deter" hover-class="other-button-hover">确定</button>
+      </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+export default class more extends wepy.component {
+  components = {}
+  data = {}
+  onLoad () {}
+  methods = {
+    confirm () {}
+  }
+}
+</script>
+
+<style>
+    .more{
+        height:1075rpx;
+        background:#fff;
+        position:relative;
+        width:100%;
+        padding:20rpx 30rpx;
+    }
+    .house{
+        height:160rpx;
+        width:100%;
+        margin-bottom:100rpx;
+        text-align: center;
+    }
+    .house_header{
+        height:40rpx;
+        line-height:20rpx;
+        color:#000;
+        font-size:35rpx;
+        margin-bottom:20rpx;
+    }
+    .house_list{
+        height:120rpx;
+        display:flex;
+        justify-content:space-between;
+        flex-wrap:wrap;
+    }
+    .houtext{
+        height:50rpx;
+        width:200rpx;
+        margin-bottom:20rpx;
+        border:1rpx solid #999;
+        line-height:50rpx;
+        text-align:center;
+        font-size:30rpx;
+    }
+    .hou{
+        height:50rpx;
+        width:200rpx;
+    }
+
+    .payment{
+        height:160rpx;
+        width:100%;
+        margin-bottom:100rpx;
+        text-align: center;
+    }
+    .payment_header{
+        height:40rpx;
+        line-height:20rpx;
+        color:#000;
+        font-size:35rpx;
+        margin-bottom:20rpx;
+    }
+    .payment_list{
+        height:120rpx;
+        display:flex;
+        justify-content:space-between;
+        flex-wrap:wrap;
+    }
+    .paytext{
+        height:50rpx;
+        width:200rpx;
+        margin-bottom:20rpx;
+        border:1rpx solid #999;
+        line-height:50rpx;
+        text-align:center;
+        fonot-size:30rpx;
+    }
+
+    .area{
+        height:160rpx;
+        width:100%;
+        margin-bottom:100rpx;
+        text-align: center;
+    }
+    .area_header{
+        height:40rpx;
+        line-height:20rpx;
+        color:#000;
+        font-size:35rpx;
+        margin-bottom:20rpx;
+    }
+    .area_list{
+        height:120rpx;
+        display:flex;
+        justify-content:space-between;
+        flex-wrap:wrap;
+    }
+    .arertext{
+        height:50rpx;
+        width:200rpx;
+        margin-bottom:20rpx;
+        border:1rpx solid #999;
+        line-height:50rpx;
+        text-align:center;
+        fonot-size:30rpx;
+    }
+
+    .but{
+        position:absolute;
+        bottom:0;
+        left:0;
+        width:100%;
+        display:flex;
+        justify-content: space-between;
+      
+  }
+    button {
+            width:50%;
+        }
+</style>

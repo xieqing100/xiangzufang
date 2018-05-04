@@ -1,0 +1,470 @@
+<template>
+  <view class="container">
+      <view class="house_img">
+      <swiper indicator-active-color="{{indicatorActiveColor}}" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" circular="true" style="width:100%;height:470rpx;">
+        <block wx:for="{{bannerList}}" wx:key="key">
+          <swiper-item style="height: 200rpx;width:100%">
+            <image src="{{item.picUrl}}" class="slide-image" @tap="goToAdvert({{item.advertUrl}})"></image>
+          </swiper-item>
+         </block>
+       </swiper>
+     </view>
+     <view class="apart_name">
+         <view class="name">
+            魔方公寓-标准复式套餐
+         </view>
+         <view class="item {{isFavorite?'selec_active':''}}" @tap="takeFavorite">
+             <i class="iconfont icon-collection"></i>
+        </view>
+     </view>
+     <view class="room_details">
+         <view class="room_case">
+             <view class="upper_name">房租</view>
+             <view class="lower_info">￥4800/月</view>
+         </view>
+         <view class="room_case">
+             <view class="upper_name">房型</view>
+             <view class="lower_info">1室1厅1卫</view>
+         </view>
+         <view class="room_case">
+             <view class="upper_name" style="border: none;">面积</view>
+             <view class="lower_info">50m</view>
+         </view>
+     </view>
+      <view class="room_type">
+        <view class="room">当前房型</view>
+          <picker-view  class="picker" style="width: 50%; height: 70rpx;border:none;" value="{{value}}">
+            <picker-view-column style="border:none;">
+                <view style="border:none;" wx:for="{{rooms}}" wx:key="{{key}}">{{item.room}}</view>
+            </picker-view-column>
+          </picker-view>
+       </view>
+       <view class="map_case">
+           <view class="map_upper">
+             <view class="map_title">地理位置</view>
+             <view class="map_address">南山区 前海花园.距离1号线大新428米</view>
+           </view>
+           <view class="map_check">
+             <map id="map" longitude="113.324520" latitude="23.099994" scale="14" controls="{{controls}}" bindcontroltap="controltap" markers="{{markers}}" bindmarkertap="markertap" polyline="{{polyline}}" bindregionchange="regionchange" show-location style="width: 100%; height: 470rpx;"></map>
+           </view>
+       </view>
+       <view class="room_info">
+         <view class="room_title">房源信息</view>
+         <block wx:for="{{roomInfo}}" wx:key="{{key}}">
+           <view class="room_wrapper">
+             <view class="infoes">
+               <text class="key_case">发布时间：</text>
+               <text class="value_case">{{item.releaseTime}}</text>
+             </view>
+             <view class="infoes">
+               <text class="key_case">楼层：</text>
+               <text class="value_case">{{item.floor}}层</text>
+             </view>
+             <view class="infoes">
+               <text class="key_case">电梯：</text>
+               <text class="value_case">{{item.isLift}}</text>
+             </view>
+             <view class="infoes">
+               <text class="key_case">入住：</text>
+               <text class="value_case">{{item.ischecking}}</text>
+             </view>
+           </view>
+           <view class="room_wrapper">
+             <view class="infoes">
+               <text class="key_case">编号：</text>
+               <text class="value_case">{{item.houseNo}}</text>
+             </view>
+             <view class="infoes">
+               <text class="key_case">装修：</text>
+               <text class="value_case">{{item.decoration}}</text>
+             </view>
+             <view class="infoes">
+               <text class="key_case">车位：</text>
+               <text class="value_case">{{item.parking}}</text>
+             </view>
+             <view class="infoes">
+               <text class="key_case">押金.：</text>
+               <text class="value_case">{{item.deposit}}</text>
+             </view>
+           </view>
+        </block>        
+       </view>
+       <view class="house_setting">
+         <view class="title">房型配置</view>
+         <block wx:for="{{houseSetting}}" wx:key="{{key}}">
+           <view class="setting">
+             <view class="image_case">
+               <image src="../images/getting.png"></image>
+             </view>
+             <text class="setting_details">{{item}}</text>
+           </view>
+         </block>
+       </view>
+       <view class="choose_room">
+         <view class="room_name">
+             <view class="image_case">
+               <image src="../images/getting.png"></image>
+             </view>
+             <text class="setting_details">魔方公寓</text>
+             <view class="change_house">全部房源</view>
+           </view>
+         <view class="wrapperes" style="width:100%;">
+           <block wx:for="{{roomPonits}}" wx:key="{{key}}">
+            <view class="ponits">
+              {{item}}
+            </view>
+          </block>
+         </view>
+       </view>
+       <view class="room_des">
+         <view class="title">房间描述</view>
+         <view class="dess_case">
+           <view>1.户型方正，面积适中。</view>
+           <view>2.布局适展，尺度宽松，动静分区</view>
+           <view>3.全明设计，南北通透，即充分采光，又有利于室内空气流通</view>
+           <view>4.客厅超大开间，与景观阳台相连，使客厅的空间感增强，采光效果更好</view>
+           <view>5.厨房与餐厅东西相连，就餐、使用更加便利</view>
+           <view>6.餐厅北面带阳台设计，采光，观景，生活更方便</view>
+         </view>
+       </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+// import tip from '../utils/tip'
+export default class detailApartroom extends wepy.page {
+  config = {
+    navigationBarTitleText: '魔方公寓--标准复式套餐'
+  }
+  components = {}
+  data = {
+    indicatorDots: true,
+    isFavorite: false,
+    autoplay: true,
+    vertical: true,
+    interval: 3000,
+    duration: 1000,
+    indicatorActiveColor: '#fff',
+    bannerList: [],
+    nearbyApart: [],
+    nearbyHouse: [],
+    services: [],
+    rooms: [],
+    roomInfo: [],
+    houseSetting: [],
+    roomPonits: [],
+    markers: [{
+      iconPath: '../images/dottings.png',
+      id: 0,
+      latitude: 23.099994,
+      longitude: 113.324520,
+      width: 56,
+      height: 56
+    }],
+    polyline: [{
+      points: [{
+        longitude: 113.3245211,
+        latitude: 23.10229
+      }, {
+        longitude: 113.324520,
+        latitude: 23.21229
+      }],
+      color: '#FF0000DD',
+      width: 2,
+      dottedLine: true
+    }],
+    controls: [{
+      id: 1,
+      iconPath: '../images/dottings.png',
+      position: {
+        left: 0,
+        top: 300 - 50,
+        width: 50,
+        height: 50
+      },
+      clickable: true
+    }]
+  }
+  onLoad() {
+    this.bannerList = [{
+      picUrl: 'http://gzzlimg-1256363150.picgz.myqcloud.com/gzzlimgs/1524052729661213742.png',
+      advertUrl: 'http://baidu.com'
+    },
+    {
+      picUrl: 'http://gzzlimg-1256363150.picgz.myqcloud.com/gzzlimgs/1524052800892794597.jpg',
+      advertUrl: '#'
+    }]
+    this.nearbyApart = [{
+      houseImg: '../images/homeList_bg.png',
+      priceNum: '2209',
+      room_num: '3',
+      renting_room: '214',
+      apart: '魔方公寓',
+      locationLogo: '../images/location.png',
+      addresDetails: '南山区前海花园局里1号线大新228米',
+      services: ['ATM', '代收快递', '专属客服', '房间清洁']
+    }, {
+      houseImg: '../images/homeList_bg.png',
+      priceNum: '3209',
+      room_num: '4',
+      renting_room: '215',
+      apart: '雅乐公寓',
+      locationLogo: '../images/location.png',
+      addresDetails: '南山区前海花园局里1号线大新328米',
+      services: ['ATM', '代收快递', '专属客服', '房间清洁']
+    }, {
+      houseImg: '../images/homeList_bg.png',
+      priceNum: '4209',
+      room_num: '5',
+      renting_room: '215',
+      apart: '泊寓公寓',
+      locationLogo: '../images/location.png',
+      addresDetails: '南山区前海花园局里1号线大新428米',
+      services: ['ATM', '代收快递', '专属客服', '房间清洁']
+    }]
+    this.nearbyHouse = [{
+      houseImg: '../images/home_cz.png',
+      priceNum: '2209',
+      apart: '魔坊公寓-标准复式套餐',
+      room: '整租-1室1厅',
+      locationLogo: '../images/location.png',
+      addresDetails: '南山区前海花园局里1号线大新428米'
+    }, {
+      houseImg: '../images/home_cz.png',
+      priceNum: '3209',
+      apart: '魔坊公寓-标准复式套餐',
+      room: '整租-2室1厅',
+      locationLogo: '../images/location.png',
+      addresDetails: '南山区前海花园局里1号线大新428米'
+    }, {
+      houseImg: '../images/home_cz.png',
+      priceNum: '4209',
+      apart: '魔坊公寓-标准复式套餐',
+      room: '整租-3室1厅',
+      locationLogo: '../images/location.png',
+      addresDetails: '南山区前海花园局里1号线大新428米'
+    }]
+    this.rooms = [{room: '标准复式套餐'}, {room: '浪漫情侣房'}, {room: '温馨家庭房'}]
+    this.roomInfo = [{
+      releaseTime: '2018-04-01',
+      floor: '5/12',
+      isLift: '有',
+      ischecking: '随时入住',
+      houseNo: 'GY9526452',
+      decoration: '豪华装修',
+      parking: '租用车位',
+      deposit: '押一付三'}]
+    this.houseSetting = ['洗衣机', '宽带', '电视机', '热水器', '储物柜', '沙发全套', '窗帘', '大冰箱']
+    this.roomPonits = ['ATM机', '代收快递', '专属客服', '房间清洁', '代驾', '洗衣', '洗鞋', '宠物寄托']
+  }
+  computed = {}
+  methods = {}
+  events = {}
+}
+
+</script>
+<style lang="less">
+.container{
+  height: auto;
+  background: white;
+}
+  .slide-image {
+    width:100%;
+    height: 500rpx;
+  }
+
+.apart_name{
+        width:100%;
+        height:84rpx;
+        border-bottom:1rpx solid #e3e6ed;
+        .name{
+            display:inline-block;
+            width:640rpx;
+            height:84rpx;
+            line-height: 84rpx;
+            padding-left:30rpx;
+            font-size: 32rpx;
+            color:#000000;
+        }
+        .item {
+            display:inline-block;
+            width:40rpx;
+            height:40rpx;
+            line-height: 84rpx;
+            padding-left:50rpx;
+        }
+        .selec_active {
+            .iconfont {
+            color: #ff4856;
+            }
+       } 
+   }
+.room_details{
+  width:100%;
+  height:200rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+    .room_case{
+      height:180rpx;
+      padding-top:20rpx;
+        .upper_name{
+          height:40rpx;
+          line-height:40rpx;
+          text-align: center;
+          border-right:1rpx solid #e3e6ed;
+        }
+        .lower_info{
+          text-align: center;
+          line-height:120rpx;
+          font-size: 30rpx;
+          font-family: 'MicrosoftYaHei';
+          color: #ff4545;
+        }
+    }
+}
+.room_type{
+  border-bottom:1rpx solid #e3e6ed;
+  .room{
+    display: inline-block;
+    width:37%;
+    height: 60rpx;
+    line-height: 25rpx;
+    padding-left:3%;
+  }
+  .picker{
+    display: inline-block;
+    width:50%;
+    height: 60rpx;
+    vertical-align: bottom;
+  }
+
+}
+.map_case{
+  width:100%;
+  padding:50rpx 0 50rpx 0;
+  border-bottom:1rpx solid #e3e6ed;
+  .map_upper{
+    padding-left:30rpx;
+    .map_title{
+    width:100%;
+    font-size:40rpx;
+    color:#000000;
+    }
+    .map_address{
+      padding-bottom:10rpx;
+    }
+  }
+}
+.room_info{
+  width:100%;
+  padding:50rpx 0 50rpx 30rpx;
+  border-bottom:1rpx solid #e3e6ed;
+  .room_title{
+    width:100%;
+    font-size:40rpx;
+    color:#000000;
+  }
+  .room_wrapper{
+    width:44%;
+    float:left;
+    margin-right:6%;
+    .infoes{
+      line-height:50rpx;
+      .key_case, .value_case{
+        font-size:30rpx;
+        line-height:50rpx;
+      }
+      .value_case{
+        color:#000000;
+      }
+    }
+  }
+}
+.house_setting{
+  width:100%;
+  padding:50rpx 0 50rpx 30rpx;
+  border-bottom:1rpx solid #e3e6ed;
+  .title{
+    width:100%;
+    font-size:40rpx;
+    color:#000000;
+  }
+  .setting{
+    width:33%;
+    display:inline-block;
+    .image_case{
+      width:24rpx;
+      height:24rpx;
+      padding-right:30rpx;
+      display:inline-block;
+      image{
+        width:24rpx;
+        height:24rpx;
+        padding-right:30rpx;
+      }
+    }
+    .setting_details{
+      width:100rpx;
+    }
+  }
+}
+.choose_room{
+  width:100%;
+  padding:50rpx 0 50rpx 30rpx;
+  border-bottom:1rpx solid #e3e6ed;
+  .room_name{
+    position: relative;
+    width:100%;
+    font-size:40rpx;
+    color:#000000;
+    display:inline-block;
+    .image_case{
+      width:60rpx;
+      height:60rpx;
+      display:inline-block;
+      padding-right:60rpx;
+      vertical-align: bottom;   
+      image{
+        width:60rpx;
+        height:60rpx;
+      }
+    }
+    .setting_details{
+        padding-left: 10rpx;
+        right:0;
+    }
+    .change_house{
+    display:inline-block;
+    color:#0066ff;
+    width:150rpx;
+    position: absolute;
+    right:0;
+    font-size:24rpx;
+    }
+  }
+  .ponits{
+    width:30%;
+    color: #0066ff;
+    border:1rpx solid #0066ff;
+    padding:10rpx;
+    margin:10rpx 10rpx 0 0;
+    border-radius: 10rpx;
+    text-align: center;
+    display:inline-block;
+  }
+}
+.room_des{
+  height:auto;
+  width:100%;
+  padding:50rpx 20rpx 50rpx 30rpx;
+  border-bottom:1rpx solid #e3e6ed;
+  .title{
+    width:100%;
+    font-size:40rpx;
+    color:#000000;
+  }
+}
+</style>

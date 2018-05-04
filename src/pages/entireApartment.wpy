@@ -1,0 +1,313 @@
+<template>
+<view class="entire">
+   <view class="int">
+      <view class="search_read_only">
+        <navigator class="search_content" open-type="navigate" url="/pages/search">
+          <view class="icon-search"></view>
+          <view class="search_input">小区，商圈，地铁站</view>
+        </navigator>
+      </view>
+    </view>
+
+    <view class="nav">
+        <view class="region nav1" bindtap="regiontap">区域 > </view>
+        <view class="Price nav1" bindtap="pricetap" >价格 > </view>
+        <view class="sort nav1" bindtap="sorttap" >排序 > </view>
+        <view class="More nav1" bindtap="moretap" >更多 > </view>
+    </view>
+    <view class="pricenav" wx:if="{{isshow}}">
+      <repeat>
+        <city wx:if="{{istop}}"></city>
+        <price wx:if="{{isprice}}"></price>
+        <paixu wx:if="{{ispaixu}}"></paixu>
+        <more wx:if="{{ismore}}"></more>
+      </repeat>
+    </view>
+    
+    <view class="scroll_list" wx:if="{{!isshow}}">
+        <view class="item_list" wx:for="{{HouseList}}" wx:key="key">
+            <navigator open-type="navigate" url="#">
+              <view class="nav_list">
+                <view class="list_img">
+                  <image src="{{item.houseImg}}" class="nav_img"></image>
+                </view>
+                <view class="list_text">
+                  <view class="list_apart1">
+                    <text class="list_apart">
+                    {{item.apart}}
+                    </text>
+                  </view>
+                  <view>
+                    <text class="list_room">{{item.room}}</text>
+                  </view>
+                    <view class="list">
+                        <text class="list_add">{{item.addresDetails}}</text>
+                    </view>
+                    <view class="num">
+                        <text class="price_num">{{item.priceNum}}</text>
+                   </view>
+                </view>
+              </view>
+            </navigator>
+            <view class="boundary"></view>
+        </view>
+    </view>
+</view>
+</template>
+<script>
+import wepy from 'wepy'
+import price from '../components/common/Price'
+import paixu from '../components/common/paixu'
+import more from '../components/common/more'
+import city from '../components/common/city'
+// import tip from '../utils/tip'
+export default class EntireApartment extends wepy.page {
+  config = {
+    navigationBarTitleText: '整租公寓'
+  }
+  components = {
+    price: price,
+    paixu: paixu,
+    more: more,
+    city: city
+  }
+  data = {
+    HouseList: [],
+    istop: false,
+    isshow: false,
+    isprice: false,
+    ispaixu: false,
+    ismore: false
+  }
+  onLoad() {
+    // 整租房租详情
+    this.HouseList = [{
+      houseImg: '../images/home_cz.png',
+      priceNum: '￥3859',
+      apart: '整租-有一家公寓',
+      room: '1室1厅1卫-75m',
+      addresDetails: '南山区前海花园局里1号线大新428米'
+    }, {
+      houseImg: '../images/home_cz.png',
+      priceNum: '￥3859',
+      apart: '整租-有一家公寓',
+      room: '1室1厅1卫-75m',
+      addresDetails: '南山区前海花园局里1号线大新428米'
+    }, {
+      houseImg: '../images/home_cz.png',
+      priceNum: '￥3859',
+      apart: '整租-有一家公寓',
+      room: '1室1厅1卫-75m',
+      addresDetails: '南山区前海花园局里1号线大新428米'
+    }, {
+      houseImg: '../images/home_cz.png',
+      priceNum: '￥3859',
+      apart: '整租-有一家公寓',
+      room: '1室1厅1卫-75m',
+      addresDetails: '南山区前海花园局里1号线大新428米'
+    }, {
+      houseImg: '../images/home_cz.png',
+      priceNum: '￥3859',
+      apart: '整租-有一家公寓',
+      room: '1室1厅1卫-75m',
+      addresDetails: '南山区前海花园局里1号线大新428米'
+    }, {
+      houseImg: '../images/home_cz.png',
+      priceNum: '￥3859',
+      apart: '整租-有一家公寓',
+      room: '1室1厅1卫-75m',
+      addresDetails: '南山区前海花园局里1号线大新428米'
+    }, {
+      houseImg: '../images/home_cz.png',
+      priceNum: '￥3859',
+      apart: '整租-有一家公寓',
+      room: '1室1厅1卫-75m',
+      addresDetails: '南山区前海花园局里1号线大新428米'
+    }]
+  }
+  computed = {}
+  methods = {
+    pricetap () {
+      this.isshow = true
+      this.isprice = true
+      this.istop = false
+      this.ispaixu = false
+      this.ismore = false
+    },
+    regiontap () {
+      this.isshow = true
+      this.istop = true
+      this.ismore = false
+      this.ispaixu = false
+      this.isprice = false
+    },
+    sorttap () {
+      this.isshow = true
+      this.ispaixu = true
+      this.ismore = false
+      this.isprice = false
+      this.istop = false
+    },
+    moretap () {
+      this.isshow = true
+      this.ismore = true
+      this.ispaixu = false
+      this.isprice = false
+      this.istop = false
+    }
+  }
+  events = {}
+}
+
+</script>
+<style lang="less">
+.entire{
+  width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 50px;
+	z-index: 500;
+}
+.int {
+  position: absolute;
+  top: 0rpx;
+  left: 0;
+  right: 0;
+  padding: 0 24rpx;
+  .icon-search{
+    position: absolute;
+    width: 32rpx;
+    height: 32rpx;
+    background: url(http://gzzlimg-1256363150.picgz.myqcloud.com/gzzlfiles/icon-search.png) no-repeat;
+    background-size: 100% 100%;
+    left: 40rpx;
+    top: 16rpx;
+  }
+  .search_content {
+    background: #666;
+    border-radius: 10rpx;
+    height: 70rpx;
+    .search_input {
+      line-height: 70rpx;
+      color: #abaeb8;
+      font-size: 28rpx;
+      text-indent: 70rpx;
+    }
+  }
+  .message {
+    display: block;
+    text-align: center;
+    margin-left: 20rpx;
+  }
+  .doc {
+    font-size: 16rpx;
+    display: block;
+  }
+}
+
+.nav{
+  width:100%;
+  position:absolute;
+   top: 80rpx;
+  left: 0;
+  right: 0;
+  height:65rpx;
+  line-height:65rpx;
+  display:flex;
+  justify-content:space-between;
+  padding:0 24rpx;
+  .nav1{
+    width:120rpx;
+    height:20rpx;
+    font-size:30rpx;
+    color:#000;
+    font-width:900;
+  }
+}
+
+.scroll_list{
+   position:absolute;
+   left:0;
+   top:120rpx;
+   font-size:12rpx;
+   color:#000;
+    .item_list{
+      width:702rpx;
+      height:270rpx;
+      margin-top:20rpx;
+      .nav_list{
+        width:702rpx;
+        height:250rpx;
+        float:left;
+        .list_img{
+          float:left;
+          height:230rpx;
+          margin:25rpx 20rpx;
+          width:300rpx;
+          .nav_img{
+            height:230rpx;
+            width:300rpx;
+            margin-top:30rpx;
+          }
+        }
+        }
+        .list_text{
+          float:left;
+          font-size:30rpx;
+          width:350rpx;
+          height:270rpx;
+          .list_room{
+            color:#000;
+            font-size:20rpx;
+          }
+          .list_apart1{
+            height:102rpx;
+            .list_apart{
+              color:#000;
+              font-size:40rpx;
+              font-weight:900;
+            }
+        
+          }
+         .list{
+            .list_add{
+            font-size:20rpx;
+            color:#000;
+            margin:20rpx 0;
+          }
+         }
+         .num{
+           .price_num{
+             display:block;
+             margin-top:20rpx;
+             color:red;
+           }
+         }
+          }
+    }
+      .boundary{
+          height: 12rpx;
+          border-top: 1rpx solid #e3e6ed;
+          border-bottom: 1rpx solid #e3e6ed;
+          background: #eff1f5;
+        }
+    }
+
+    .pricenav{
+      position:absolute;
+      top:140rpx;
+      left:0;
+      height:1000rpx;
+      background-color:rgba(0,0,0,0.3);
+    }
+    .regionnav{
+      width:100%;
+      height:1000rpx;
+      position:absolute;
+      top:140rpx;
+      left:0;
+    
+    }
+
+</style>

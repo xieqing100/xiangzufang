@@ -1,0 +1,25 @@
+<template>
+  <view class="bookTravel">
+    预约行程
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+// import tip from '../utils/tip'
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: '享租房-预约行程'
+  }
+  components = {}
+  data = {}
+  onLoad() {}
+  computed = {}
+  methods = {}
+  events = {}
+}
+
+</script>
+<style lang="less">
+
+
+</style>

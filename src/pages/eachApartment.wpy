@@ -1,0 +1,328 @@
+<template>
+  <view class="container">
+      <view class="house_img">
+          <image classs="nav_icon" src="../images/home_cz.png"></image>
+          <view class="apart_case">
+             <view class="apart_logo">
+                 <image src="../images/slogan_icon2.png" class="nav_icon"></image>
+              </view>
+          </view>
+      </view>
+      <view class="apart_des">
+          <view class="apart_title">魔方公寓</view>
+          <view class="des packup" data-content="蛋壳公寓的房间由专业设计师精心打造，全新环保装修租客可轻松拎包入住，全新环保装修租客可轻松拎包入住可轻松拎包入住入住蛋壳公寓的房间由专业设计师精心打造qqqqqqqqqqqqqqqqqqqqqqqqqqqqqq">
+            <text class="content">蛋壳公寓的房间由专业设计师精心打造，全新环保装修租客可轻松拎包入住，全新环保装修租客可轻松拎包入住可轻松拎包入住入住sssssssssssssssssssssssssssssssssssssssssssssssssssssssssss</text>
+            </view>
+          <!--<view class="des_all">查看全部</view>-->
+      </view>
+      <!--在租房源-->
+   <view class="section_two">
+      <view class="section__titles">
+        <text>- 在租房型 -</text>
+      </view>
+      <view class="scroll_house">
+        <view class="item_list" wx:for="{{nearbyHouse}}" wx:key="{{index}}">
+          <navigator open-type="navigate" url="/pages/detailApartroom" style="width:702rpx;height:450rpx;" hover-class="none">
+            <view class="house_img">
+              <image src="{{item.houseImg}}" class="nav_icon"></image>
+              <view class="price_case">
+                  <text>￥ {{item.priceNum}}</text>
+                  <text  style="font-size:20rpx">/月</text>
+              </view>
+            </view>
+            <view class="aprt_name">
+              <view class="apart_slogan">
+                <text class="apart">{{item.apart}}</text>
+                <text class="room"> | {{item.room}}</text>
+              </view>
+              <view class="apart_address">
+                <view class="location">
+                    <image src="../images/location.png"></image>
+                </view>
+                <text class="address_details">{{item.addresDetails}}</text>
+              </view>
+            </view>
+          </navigator>
+        </view>
+       </view>
+    </view>
+    <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
+    <!--暂无数据显示-->
+    <placeholder :show.sync="is_empty" message="暂时没有数据哦"></placeholder>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+// import tip from '../utils/tip'
+import BottomLoadMore from '../components/common/bottomLoadMore'
+import Placeholder from '../components/common/placeholder'
+export default class eachApartment extends wepy.page {
+  config = {
+    navigationBarTitleText: '附近公寓'
+  }
+  components = {
+    bottomLoadMore: BottomLoadMore,
+    placeholder: Placeholder
+  }
+  data = {
+    nearbyApart: [],
+    nearbyHouse: [],
+    services: [],
+    // 是否显示 底部loading
+    showLoading: false,
+    is_empty: false
+  }
+  onLoad() {
+    this.nearbyApart = [{
+      houseImg: '../images/homeList_bg.png',
+      priceNum: '2209',
+      room_num: '3',
+      renting_room: '214',
+      apart: '魔方公寓',
+      locationLogo: '../images/location.png',
+      addresDetails: '南山区前海花园局里1号线大新228米',
+      services: ['ATM', '代收快递', '专属客服', '房间清洁']
+    }, {
+      houseImg: '../images/homeList_bg.png',
+      priceNum: '3209',
+      room_num: '4',
+      renting_room: '215',
+      apart: '雅乐公寓',
+      locationLogo: '../images/location.png',
+      addresDetails: '南山区前海花园局里1号线大新328米',
+      services: ['ATM', '代收快递', '专属客服', '房间清洁']
+    }, {
+      houseImg: '../images/homeList_bg.png',
+      priceNum: '4209',
+      room_num: '5',
+      renting_room: '215',
+      apart: '泊寓公寓',
+      locationLogo: '../images/location.png',
+      addresDetails: '南山区前海花园局里1号线大新428米',
+      services: ['ATM', '代收快递', '专属客服', '房间清洁']
+    }]
+    this.nearbyHouse = [{
+      houseImg: '../images/home_cz.png',
+      priceNum: '2209',
+      apart: '魔坊公寓-标准复式套餐',
+      room: '整租-1室1厅',
+      locationLogo: '../images/location.png',
+      addresDetails: '南山区前海花园局里1号线大新428米'
+    }, {
+      houseImg: '../images/home_cz.png',
+      priceNum: '3209',
+      apart: '魔坊公寓-标准复式套餐',
+      room: '整租-2室1厅',
+      locationLogo: '../images/location.png',
+      addresDetails: '南山区前海花园局里1号线大新428米'
+    }, {
+      houseImg: '../images/home_cz.png',
+      priceNum: '4209',
+      apart: '魔坊公寓-标准复式套餐',
+      room: '整租-3室1厅',
+      locationLogo: '../images/location.png',
+      addresDetails: '南山区前海花园局里1号线大新428米'
+    }]
+  }
+  computed = {}
+  methods = {}
+  events = {}
+}
+
+</script>
+<style lang="less">
+.container{
+    background: white;
+}
+.house_img{
+        position: relative;
+        width:100%;
+        height:350rpx;
+        image{
+          width:100%;
+          height:350rpx;
+        }
+        .apart_case{
+          position: absolute;
+          bottom:-60rpx;
+          left:324rpx;
+          width:100rpx;
+          height:100rpx;
+          background: #ffffff;
+          border-radius: 50%;
+          box-shadow: 0px 0px 8px 3px rgba(0, 0, 0, 0.3);
+          .apart_logo{
+            width:100rpx;
+            height:100rpx;
+            padding-left:19rpx;
+            image{
+              position: absolute;
+              bottom:10rpx;
+              left:10rpx;
+              width:80rpx;
+              height:80rpx;
+          }
+       }
+   }
+}
+.apart_des{
+    width:100%;
+    height:400rpx;
+    border:1rpx solid #e3e6ed;
+    padding:80rpx 70rpx 0 70rpx;
+    .apart_title{
+        font-size: 36rpx;
+        color:#000000;
+        font-family: 'MicrosoftYaHei';
+        font-weight:600;
+        text-align: center;
+        padding-bottom:20rpx;
+    }
+    .des{
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 10rpx;
+      line-height: 44rpx;
+      word-break: break-all;
+      font-size:28rpx;
+      text-indent:20rpx;
+    }
+    .des_all{
+        display:inline-block;
+        color:#0066ff;
+    }
+}
+  .section_two{
+    position: relative;
+    width:702rpx;
+    height:1500rpx;
+    .section__titles{
+      position: relative;
+      padding:60rpx 0 40rpx 0;
+      font-size: 36rpx;
+      color:#000000;
+      font-family: 'MicrosoftYaHei';
+      font-weight:600;
+      padding-left: 35rpx;
+      text-align: center;
+    }
+    .scroll_house{
+    height: auto;
+    overflow: hidden;
+    background: #fff;
+    white-space: nowrap;
+    .item_list{
+      width:702rpx;
+      height:450rpx;
+      .house_img{
+        position: relative;
+        width:702rpx;
+        height:300rpx;
+        .nav_icon{
+          width:702rpx;
+          height:300rpx;
+        }
+        .price_case{
+            position: absolute;
+            width:150rpx;
+            height:50rpx;
+            bottom:20rpx;
+            left:0;
+            background: rgb(255, 69, 69);
+            font-size:30rpx;
+            line-height: 50rpx;
+            color:#ffffff;
+            font-family: 'MicrosoftYaHei';
+            text-align: center;
+          }
+      }
+      .aprt_name{
+        width:702rpx;
+        height:80rpx;
+        padding-top:20rpx;
+        .apart_slogan{
+          .apart{
+            font-size:30rpx;
+            color:#333333;
+          }
+          .room{
+            color:#666666;
+            font-size:30rpx;
+          } 
+        }
+        .apart_address{
+          margin-top:10rpx;
+          margin-bottom: 40rpx;
+          position: relative;
+          .location{
+            width:25rpx;
+            height:30rpx;
+            position: absolute;
+            image{
+                 width:25rpx;
+                 height:30rpx;
+             }
+          }
+          .address_details{
+            font-size:24rpx;
+            color:#8b8b8b;
+            padding-left:30rpx;
+          }
+          .price_num{
+            position: absolute;
+            right:0;
+            font-size: 30rpx;
+            font-family: 'MicrosoftYaHei';
+            color: #ff4545;
+          }
+        }
+      }
+    }
+    }
+  }
+  .over {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-height: 150rpx;
+  width:100%;
+}
+.packup{
+  width:100%;
+    text{
+      height: 150rpx;
+    }
+}
+.packup:before{
+    display: block;
+    content: attr(data-content);
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    height: 130rpx;
+    width: 100%;
+    overflow: hidden;
+    color: #999;
+    background-color: #fff;
+    text-indent: 30rpx;
+       
+}
+.packup:after{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-line-clamp: 4;
+    content: attr(data-content);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-indent: -30rpx;
+    padding-right: 30rpx;
+    color: #999;
+    background-color: #fff;
+}
+</style>

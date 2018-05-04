@@ -1,0 +1,620 @@
+<template>
+  <view class="container">
+    <view class="swiper-list">
+      <swiper indicator-active-color="{{indicatorActiveColor}}" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" circular="true" style="width:100%;height:470rpx;">
+        <block wx:for="{{bannerList}}" wx:key="key">
+          <swiper-item>
+            <image src="{{item.picUrl}}" class="slide-image" @tap="goToAdvert({{item.advertUrl}})" />
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+    <view class="pos">
+      <view class="search_read_only">
+        <navigator class="search_content" open-type="navigate" hover-class="none" url="/pages/search">
+          <view class="icon-search"></view>
+          <view class="search_input">
+            <text style="color:black;font-size: 30rpx;">深圳</text>
+            <text> | </text>
+            <text>你想要住在哪儿？</text>
+          </view>
+        </navigator>
+      </view>
+    </view>
+    <!--<view class="house-news">
+      <swiper style="width: 100%;height: 60rpx;" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" vertical="{{vertical}}" circular="true">
+        <block wx:for="{{houseInfo}}" wx:key="key">
+          <swiper-item>
+            <view class="news-icon">房讯 </view>
+            <view class="news-item"> {{item.info}}</view>
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>-->
+    <view class="nav_list">
+      <navigator class="nav_item" open-type="navigate" url="/pages/entireApartment" hover-class="none">
+        <image src="../images/icon_nav_01.png" class="nav_icon"></image>
+        <view class="nav_text">整租公寓</view>
+      </navigator>
+      <navigator class="nav_item" open-type="navigate" url="#" hover-class="none">
+        <image src="../images/icon_nav_02.png" class="nav_icon"></image>
+        <view class="nav_text">合租公寓</view>
+      </navigator>
+      <navigator class="nav_item" open-type="navigate" url="#" hover-class="none">
+        <image src="../images/icon_nav_03.png" class="nav_icon"></image>
+        <view class="nav_text">独栋公寓</view>
+      </navigator>
+      <navigator class="nav_item" open-type="navigate" url="#" hover-class="none">
+        <image src="../images/icon_nav_04.png" class="nav_icon"></image>
+        <view class="nav_text">品牌馆</view>
+      </navigator>
+    </view>
+    <view class="boundary"></view>
+    <!--附近公寓-->
+    <view class="section_gap">
+      <view class="label_logo">
+        <image class="label_img" src="../images/labels.png"></image>
+      </view>
+      <view class="section__titles">
+        <text>附近公寓</text>
+        <text class="more_detail" @tap="allApartment">更多 ></text>
+      </view>
+      <view class="scroll_apart"> 
+        <scroll-view class="scroll-view_x" scroll-x="true" style="width:auto;overflow:hidden">
+         <view class="item_list" wx:for="{{nearbyApart}}" wx:key="key">
+            <navigator open-type="navigate" url="{{item.url}}" style="width:100%;height:100%" hover-class="none">
+              <image src="{{item.image}}" class="nav_icon"></image>
+              <view class="aprt_name">
+                <view class="aprt_logo">
+                  <image src="{{item.icon}}"></image>
+                  <view class="apart_details">
+                    <text class="apart_name">{{item.name}}</text>
+                    <text class="apart_ponit">{{item.ponit}}</text>
+                  </view>
+                </view>
+              </view>
+            </navigator>
+          </view>
+        </scroll-view>
+       </view>
+    </view>
+    <view class="boundary"></view>
+    <!--推荐房源-->
+    <view class="section_two">
+      <view class="label_logo">
+        <image class="label_img" src="../images/labels.png"></image>
+      </view>
+      <view class="section__titles">
+        <text>推荐房源</text>
+        <text class="more_detail">更多 ></text>
+      </view>
+      <view class="scroll_house">
+        <view class="item_list" wx:for="{{nearbyHouse}}" wx:key="{{index}}">
+          <navigator open-type="navigate" url="/pages/exchange_goods" style="width:702rpx;height:450rpx;">
+            <view class="house_img">
+              <image src="{{item.houseImg}}" class="nav_icon"></image>
+            </view>
+            <view class="aprt_name">
+              <view class="apart_slogan">
+                <text class="apart">{{item.apart}}</text>
+                <text class="room"> | {{item.room}}</text>
+              </view>
+              <view class="apart_address">
+                <text class="address_details">{{item.addresDetails}}</text>
+                <text class="price_num">￥{{item.priceNum}}/月</text>
+              </view>
+            </view>
+          </navigator>
+        </view>
+       </view>
+    </view>
+    <view class="boundary"></view>
+    <view class="slogan">
+      <view class="slogan-content">
+        <view class="" wx:for="{{sloganList}}" wx:key="{{index}}" class="{{index % 2 == 0 ? 'fl slogan-item' : 'fr slogan-item'}}">
+          <view class="icon">
+            <image src="{{item.icon}}"></image>
+            <text class="txt">
+               {{item.txt}}
+            </text>
+          </view>
+          <view class="desc">{{item.desc1}} {{item.desc2}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+// import tip from '../utils/tip'
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: '享租房'
+  }
+  components = {}
+  data = {
+    indicatorDots: true,
+    autoplay: true,
+    vertical: true,
+    interval: 3000,
+    duration: 1000,
+    indicatorActiveColor: '#fff',
+    nearbyApart: [],
+    nearbyHouse: [],
+    bannerList: [],
+    houseInfo: [],
+    sloganList: []
+  }
+  onLoad() {
+    console.log(this.$parent.globalData)
+    // 附近公寓
+    this.nearbyApart = [{
+      image: '../images/home_cz.png',
+      icon: '../images/slogan_icon4.png',
+      name: '自如公寓',
+      ponit: '品质租住生活',
+      url: '/pages/eachApartment'
+    }, {
+      image: '../images/homeList_bg.png',
+      icon: '../images/slogan_icon4.png',
+      name: '雅乐公寓',
+      ponit: '品质租住生活',
+      url: '/pages/eachApartment'
+    }, {
+      image: '../images/home_cz.png',
+      icon: '../images/slogan_icon4.png',
+      name: '魔方公寓',
+      ponit: '品质租住生活',
+      url: '/pages/eachApartment'
+    }, {
+      image: '../images/homeList_bg.png',
+      icon: '../images/slogan_icon4.png',
+      name: '泊寓公寓',
+      ponit: '品质租住生活',
+      url: '/pages/eachApartment'
+    }]
+    // 推荐房源
+    this.nearbyHouse = [{
+      houseImg: '../images/home_cz.png',
+      priceNum: '2209',
+      apart: '有一家公寓',
+      room: '整租-1室1厅',
+      locationLogo: '../images/location.png',
+      addresDetails: '南山区前海花园局里1号线大新428米'
+    }, {
+      houseImg: '../images/home_cz.png',
+      priceNum: '3209',
+      apart: '有两家公寓',
+      room: '整租-2室1厅',
+      locationLogo: '../images/location.png',
+      addresDetails: '南山区前海花园局里1号线大新428米'
+    }, {
+      houseImg: '../images/home_cz.png',
+      priceNum: '4209',
+      apart: '有三家公寓',
+      room: '整租-3室1厅',
+      locationLogo: '../images/location.png',
+      addresDetails: '南山区前海花园局里1号线大新428米'
+    }]
+    this.bannerList = [{
+      picUrl: 'http://gzzlimg-1256363150.picgz.myqcloud.com/gzzlimgs/1524052729661213742.png',
+      advertUrl: 'http://baidu.com'
+    },
+    {
+      picUrl: 'http://gzzlimg-1256363150.picgz.myqcloud.com/gzzlimgs/1524052800892794597.jpg',
+      advertUrl: '#'
+    }]
+    this.houseInfo = [{
+      info: '深圳二手房“三价合一”：遏制“阴阳合同”和“高评高贷”'
+    }, {
+      info: '解读|深圳“三价合一”政策究竟有哪些秘密？！对惠'
+    }, {
+      info: '深度解析中国租赁服务市场发展现状,市场需求,可行性研究发展前景'
+    }]
+    this.sloganList = [
+      {
+        icon: '../images/slogan_new1.png',
+        txt: '认证公寓商',
+        desc1: '公寓机构资质验真',
+        desc2: '租住更放心'
+      },
+      {
+        icon: '../images/slogan_new2.png',
+        txt: '真实房源',
+        desc1: '人工审核房源信息',
+        desc2: '找房更靠谱'
+      },
+      {
+        icon: '../images/slogan_new3.png',
+        txt: '支付保障',
+        desc1: '全平台在线签约',
+        desc2: '支付更方便'
+      },
+      {
+        icon: '../images/slogan_new4.png',
+        txt: '信用租房',
+        desc1: '积累租房信用',
+        desc2: '免押租房更轻松'
+      }
+    ]
+  }
+  onShareAppMessage (res) {
+    if (res.from === 'button') {
+      // 来自页面内转发按钮
+      console.log(res.target)
+    }
+    return {
+      title: '首页转发',
+      path: '/page/index',
+      success: function(res) {
+        // 转发成功
+      },
+      fail: function(res) {
+        // 转发失败
+      }
+    }
+  }
+  computed = {}
+  methods = {
+    allApartment () {
+      wepy.navigateTo({
+        url: '/pages/allApartment'
+      })
+    }
+  }
+  events = {}
+}
+
+</script>
+<style lang="less">
+.swiper-list {
+  padding: 0 24rpx;
+  height: 470rpx;
+  box-sizing: border-box;
+  overflow: hidden;
+  .slide-image {
+    border-radius: 10rpx;
+    width: 100%;
+    height: 470rpx;
+  }
+}
+.pos {
+  position: absolute;
+  top: 24rpx;
+  left: 0;
+  right: 0;
+  padding: 0 40rpx;
+  .icon-search{
+    position: absolute;
+    width: 34rpx;
+    height: 34rpx;
+    background: url(http://gzzlimg-1256363150.picgz.myqcloud.com/gzzlfiles/icon-search.png) no-repeat;
+    background-size: 100% 100%;
+    right:64rpx;
+    top: 20rpx;
+  }
+  .search_content {
+    background: #f5f5f5;
+    border-radius: 100rpx;
+    height: 70rpx;
+    .search_input {
+      line-height: 70rpx;
+      color: #abaeb8;
+      font-size: 28rpx;
+      text-indent: 30rpx;
+      display:inline-block;
+    }
+  }
+  .message {
+    display: block;
+    text-align: center;
+    margin-left: 20rpx;
+  }
+  .doc {
+    font-size: 16rpx;
+    display: block;
+  }
+}
+
+.house-news{
+  width: 100%;
+  height: 70rpx;
+  padding: 20rpx 24rpx;
+  box-sizing: border-box;
+  text-align: center;
+  border-bottom: 1rpx solid #e3e6ed;
+  overflow: hidden;
+  .news-icon{
+    width: 75rpx;
+    height: 32rpx;
+    background: url(http://gzzlimg-1256363150.picgz.myqcloud.com/gzzlfiles/house-news.png) no-repeat;
+    background-size: 100% 100%;
+    float: left;
+    font-size: 20rpx;
+    color: #fff;
+  }
+  .news-item{
+    float: left;
+    color: #333;
+    font-size: 26rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 86%;
+  }
+  .next-icon{
+    position: absolute;
+    right: 0;
+    top: 20rpx;
+    width: 10rpx;
+    height: 18rpx;
+  }
+}
+.nav_list {
+  display: flex;
+  justify-content: space-between;
+  .nav_item{
+    text-align: center;
+    flex: 1;
+    padding: 40rpx 0;
+    .nav_icon {
+      height: 80rpx;
+      margin: 0 auto;
+      width: 80rpx;
+      margin-bottom: 14rpx;
+    }
+    .nav_text {
+      font-size: 28rpx;
+      color: #000;
+      font-family: 'MicrosoftYaHei';
+    }
+  }
+}
+.boundary{
+  height: 12rpx;
+  border-top: 1rpx solid #e3e6ed;
+  border-bottom: 1rpx solid #e3e6ed;
+  background: #eff1f5;
+}
+.section_gap{
+  position: relative;
+  width:702rpx;
+  height:488rpx;
+  .label_logo{
+    position: absolute;
+    height:20rpx;
+    width:42rpx;
+    top:65rpx;
+    left:-22rpx;
+    .label_img{
+      height:20rpx;
+      width:42rpx;
+    }
+  }
+  .section__titles{
+    position: relative;
+    padding:60rpx 0 40rpx 0;
+    font-size: 36rpx;
+    color:#000000;
+    font-family: 'MicrosoftYaHei';
+    font-weight:600;
+    padding-left: 35rpx;
+    .more_detail{
+      position: absolute;
+      font-weight:500;
+      font-size:32rpx;
+      right:0;
+      color:#999999;
+      font-family: 'MicrosoftYaHei';
+    }
+  }
+  .scroll_apart{
+    height: 340rpx;
+    overflow: hidden;
+    background: #fff;
+    white-space: nowrap;
+    }
+    .item_list{
+    width: 380rpx;
+    height: 340rpx;
+    margin-right: 24rpx;
+    display: inline-block;
+    .nav_icon{
+      width:380rpx;
+      height:210rpx;
+    }
+    .aprt_name{
+      padding:22rpx 0 40rpx 0;
+      height:120rpx;
+      width:380rpx;
+      .aprt_logo{
+        width:60rpx;
+        height:60rpx;
+        image{
+          width:60rpx;
+          height:60rpx;
+         }
+         .apart_details{
+           display:inline-block;
+           width:320rpx;
+           margin-left: 14rpx;
+           vertical-align: top;
+           .apart_name{
+             font-size: 24rpx;
+             color:#666666;
+             font-family: 'MicrosoftYaHei';
+             display:block;
+           }
+           .apart_ponit{
+              font-size: 18rpx;
+              color:#c0c0c0;
+              font-family: 'MicrosoftYaHei';
+              display:block;
+           }
+         }
+      }
+    }
+    }
+  }
+  .section_two{
+    position: relative;
+    width:702rpx;
+    height:1500rpx;
+    .label_logo{
+    position: absolute;
+    height:20rpx;
+    width:42rpx;
+    top:65rpx;
+    left:-22rpx;
+    .label_img{
+      height:20rpx;
+      width:42rpx;
+    }
+  }
+    .section__titles{
+      position: relative;
+      padding:60rpx 0 40rpx 0;
+      font-size: 36rpx;
+      color:#000000;
+      font-family: MicrosoftYaHei;
+      font-weight:600;
+      padding-left: 35rpx;
+      .more_detail{
+        position: absolute;
+        font-weight:500;
+        font-size:32rpx;
+        right:0;
+        color:#999999;
+        font-family: 'MicrosoftYaHei';
+       }
+    }
+    .scroll_house{
+    height: auto;
+    overflow: hidden;
+    background: #fff;
+    white-space: nowrap;
+    .item_list{
+      width:702rpx;
+      height:450rpx;
+      .house_img{
+        position: relative;
+        width:702rpx;
+        height:300rpx;
+        .nav_icon{
+          width:702rpx;
+          height:300rpx;
+        }
+        .price_case{
+          position: absolute;
+          bottom:0;
+          right:0;
+          border-top-left-radius: 65%;
+          width:170rpx;
+          height:84rpx;
+          background: #0084ff;
+          .price_logo{
+            width:24rpx;
+            height:24rpx;
+            padding-left:20rpx;
+            image{
+              position: absolute;
+              bottom:12rpx;;
+              left:24rpx;
+              width:24rpx;
+              height:24rpx;
+            }
+          .price_num{
+            padding-left:40rpx;
+            line-height: 120rpx;
+            font-size:30rpx;
+            color:#ffffff;
+            font-family: 'MicrosoftYaHei';
+          }
+          .pric_unit{
+            line-height: 120rpx;
+            font-size:20rpx;
+            color:#80ffffff;
+            font-family: 'MicrosoftYaHei';
+          }
+          }
+        }
+      }
+      .aprt_name{
+        width:702rpx;
+        height:80rpx;
+        padding-top:20rpx;
+        .apart_slogan{
+          .apart{
+            font-size:30rpx;
+            font-size:#333333;
+          }
+          .room{
+            color:#999999;
+            font-size:28rpx;
+          } 
+        }
+        .apart_address{
+          margin-top:10rpx;
+          margin-bottom: 40rpx;
+          position: relative;
+          .location{
+            width:32rpx;
+            height:40rpx;
+            position: absolute;
+          }
+          .address_details{
+            font-size:30rpx;
+            color:#999999;
+          }
+          .price_num{
+            position: absolute;
+            right:0;
+            font-size: 30rpx;
+            font-family: 'MicrosoftYaHei';
+            color: #ff4545;
+          }
+        }
+      }
+    }
+    }
+  }
+.slogan{
+  padding: 40rpx 0 0 0;
+  .slogan-content{
+      width: 640rpx;
+      margin: 0 auto;
+      text-align: center;
+      overflow: hidden;
+      .slogan-item{
+        width: 312rpx;
+        height: 142rpx;
+        border-radius: 10rpx;
+        border: 1rpx solid #f5f5f5;
+        line-height:35rpx;
+        margin-bottom: 40rpx;
+        .icon{
+          display: inline-block;
+          width: 100%;
+          height:auto;
+          image{
+            display: inline-block;
+            width: 33rpx;
+            height:33rpx;
+            vertical-align: bottom;
+          }
+          .txt{
+          display: inline-block;
+          font-size: 30rpx;
+          vertical-align: top;
+          color: #2f82ff;
+          padding-left:10rpx;
+          }
+        }
+        .desc{
+          font-size: 20rpx;
+          color: #999;
+        }
+      }
+  }
+}
+</style>
